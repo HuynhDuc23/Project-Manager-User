@@ -1,7 +1,10 @@
 <?php
 session_start();
+
 require_once('config.php');
+require_once('includes/connect.php');
 require_once('includes/functions.php');
+require_once('includes/database.php');
 
 $module = _MODULE_DEFAULT;
 $action = _ACTION_DEFAULT;
@@ -21,5 +24,5 @@ $path = "modules/" . $module . "/" . $action . ".php";
 if (file_exists($path)) {
   require_once($path);
 } else {
-  require_once("modules/errors/404.php");
+  require_once("modules/errors/database.php");
 }

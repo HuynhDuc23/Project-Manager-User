@@ -12,3 +12,9 @@ define('_WEB_HOST_TEMPLATES', _WEB_HOST_ROOT . '/templates');
 // thiet lap path
 define('_WEB_PATH_ROOT', __DIR__);
 define('_WEB_PATH_TEMPLATE', _WEB_PATH_ROOT . '/templates');
+
+const _HOST = 'localhost';
+const _USER = 'root';
+const _PASS = '';
+const _DB = 'todolist_user';
+const _DRIVER = 'mysql';
