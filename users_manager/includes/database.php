@@ -2,7 +2,7 @@
 if (!defined('_INCODE')) {
   die("Access denied...");
 }
-// query : insert update , delete
+// query : insert update , delete : tong quat
 function query($sql, $data = [], $statementStatus = false)
 {
   global $conn;
