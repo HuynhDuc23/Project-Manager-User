@@ -33,7 +33,8 @@ function insert($table, $dataInsert)
   $sql = 'INSERT INTO ' . $table . '' . ($fieldStr) . 'VALUES (' . $valueStr . ')';
   return query($sql, $dataInsert);
 }
-function ($table, $dataUpdate, $condition) {
+function update($table, $dataUpdate, $condition)
+{
   $updateStr = '';
   foreach ($dataUpdate as $key => $value) {
     $updateStr .= $key . '= :' . $key . ',';
@@ -90,4 +91,11 @@ function first($table, $field = '*', $condition = '')
     $sql .= ' WHERE ' . $condition;
   }
   return firstRaw($sql);
+}
+function getRows($sql)
+{
+  $statement = query($sql, [], true);
+  if (!empty($statement)) {
+    return $statement->rowCount();
+  }
 }

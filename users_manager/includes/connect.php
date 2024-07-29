@@ -11,6 +11,8 @@ try {
       PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'
     ];
     $conn = new PDO($dsn, _USER, _PASS, $options);
+
+    //echo "Sucessfully connected";
   }
 } catch (Exception $ex) {
   echo "Connection failed: " . $ex->getMessage();

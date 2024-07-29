@@ -134,3 +134,25 @@ function isNumberFloat($number, $range = [])
   }
   return $checkNumber;
 }
+function isPhone($number)
+{
+  $checkFirstZero = false;
+  if ($number[0] == '0') {
+    $checkFirstZero = true;
+    $number = substr($number, 1);
+  }
+  $checkNumberLast = false;
+  if (isNumberInt($number) && (strlen($number) == 9)) {
+    $checkNumberLast = true;
+  }
+  if ($checkFirstZero && $checkNumberLast) {
+    return true;
+  }
+  return false;
+}
+function getMsg($msg, $type = 'success')
+{
+  echo "<div class=\"alert alert-$type\">";
+  echo $msg;
+  echo '</div>';
+}

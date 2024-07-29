@@ -11,10 +11,10 @@ layout('header-login');
 //   echo 'Sucessfully sent';
 // }
 
-if (isPost()) {
-  $datas = getBody();
-  print_r($datas);
-}
+// if (isPost()) {
+//   $datas = getBody();
+//   print_r($datas);
+// }
 ?>
 <div class="container h-100">
   <div class="d-flex justify-content-center h-100">
