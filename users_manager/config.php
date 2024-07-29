@@ -18,3 +18,5 @@ const _USER = 'root';
 const _PASS = '';
 const _DB = 'todolist_user';
 const _DRIVER = 'mysql';
+
+const _SECRET = 'faxvowzggaszctcc';

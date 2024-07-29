@@ -4,8 +4,17 @@ if (!defined('_INCODE')) {
 }
 layout('header-login');
 
-setSession('username', 'HuynhDuc');
-echo getSession('username');
+// setSession('username', 'HuynhDuc');
+// echo getSession('username');
+// $send = sendMail('ductrantad23@gmail.com', 'Test', 'Hiii');
+// if ($send) {
+//   echo 'Sucessfully sent';
+// }
+
+if (isPost()) {
+  $datas = getBody();
+  print_r($datas);
+}
 ?>
 <div class="container h-100">
   <div class="d-flex justify-content-center h-100">
@@ -16,18 +25,18 @@ echo getSession('username');
         </div>
       </div>
       <div class="d-flex justify-content-center form_container">
-        <form>
+        <form action="?module=auth&action=login" method="post">
           <div class="input-group mb-3">
             <div class="input-group-append">
               <span class="input-group-text"><i class="fa fa-user" aria-hidden="true"></i></span>
             </div>
-            <input type="text" name="" class="form-control input_user" value="" placeholder="username">
+            <input type="text" name="email" class="form-control input_user" value="" placeholder="email">
           </div>
           <div class="input-group mb-2">
             <div class="input-group-append">
               <span class="input-group-text"><i class="fa fa-key" aria-hidden="true"></i></span>
             </div>
-            <input type="password" name="" class="form-control input_pass" value="" placeholder="password">
+            <input type="password" name="password" class="form-control input_pass" value="" placeholder="password">
           </div>
           <!-- <div class="form-group">
             <div class="custom-control custom-checkbox">
@@ -36,7 +45,7 @@ echo getSession('username');
             </div>
           </div> -->
           <div class="d-flex justify-content-center mt-3 login_container">
-            <button type="button" name="button" class="btn login_btn">Login</button>
+            <button type="submit" name="button" class="btn login_btn" value="submit">Login</button>
           </div>
         </form>
       </div>
@@ -55,3 +64,4 @@ echo getSession('username');
 
 <?php
 layout('footer-login');
+?>
