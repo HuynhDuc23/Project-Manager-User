@@ -9,6 +9,7 @@ function query($sql, $data = [], $statementStatus = false)
   $query = false;
   try {
     $statement = $conn->prepare($sql);
+
     if (empty($data)) {
       $query = $statement->execute();
     } else {
@@ -38,12 +39,13 @@ function update($table, $dataUpdate, $condition)
 {
   $updateStr = '';
   foreach ($dataUpdate as $key => $value) {
-    $updateStr .= $key . '= :' . $key . ',';
+    $updateStr .= $key . ' =:' . $key . ',';
   }
   $updateStr = rtrim($updateStr, ',');
-
+  //echo $updateStr;
   if (!empty($condition)) {
-    $sql = 'UPDATE ' . $table . 'SET' . $updateStr . 'WHERE ' . $condition;
+    $sql = 'UPDATE ' . $table . ' SET ' . $updateStr . ' WHERE ' . $condition;
+    echo $sql;
   } else {
     $sql = 'UPDATE ' . $table . 'SET' . $updateStr;
   }
@@ -72,6 +74,7 @@ function getRaw($sql)
 function firstRaw($sql)
 {
   $statement = query($sql, [], true);
+
   if (is_object($statement)) {
     return $statement->fetch(PDO::FETCH_ASSOC);
   }

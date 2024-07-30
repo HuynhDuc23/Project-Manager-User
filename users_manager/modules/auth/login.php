@@ -4,27 +4,14 @@ if (!defined('_INCODE')) {
 }
 layout('header-login');
 
-// setSession('username', 'HuynhDuc');
-// echo getSession('username');
-// $send = sendMail('ductrantad23@gmail.com', 'Test', 'Hiii');
-// if ($send) {
-//   echo 'Sucessfully sent';
-// }
-
-// if (isPost()) {
-//   $datas = getBody();
-//   print_r($datas);
-// }
+$msg = getFlashData('msg');
 ?>
 <div class="container h-100">
   <div class="d-flex justify-content-center h-100">
     <div class="user_card">
-      <div class="d-flex justify-content-center">
-        <div class="brand_logo_container">
-          <img src="https://cdn.freebiesupply.com/logos/large/2x/pinterest-circle-logo-png-transparent.png" class="brand_logo" alt="Logo">
-        </div>
-      </div>
+      <?php echo (!empty($msg)) ? getMsg($msg) : null ?>
       <div class="d-flex justify-content-center form_container">
+
         <form action="?module=auth&action=login" method="post">
           <div class="input-group mb-3">
             <div class="input-group-append">
