@@ -5,6 +5,64 @@ if (!defined('_INCODE')) {
 layout('header-login');
 
 $msg = getFlashData('msg');
+
+// Kiểm tra trạng thái đăng nhập
+$checkLogin = false;
+if (getSession('loginToken')) {
+  $tokenLogin = getSession('loginToken');
+  $queryToken = firstRaw("SELECT userId FROM login_token WHERE  token ='$tokenLogin'");
+  if (!empty($queryToken)) {
+    $checkLogin = true;
+  } else {
+    removeSession('loginToken');
+  }
+}
+if ($checkLogin) {
+  redirect('?module=users');
+}
+
+// xử lý trạng thái đăng nhâp;
+if (isPost()) {
+  $body = getBody();
+  if (!empty(trim($body['email'])) && !empty(trim($body['password']))) {
+    // kiểm tra đăng nhập
+    $email = $body['email'];
+    $password = $body['password'];
+    // $ truy vấn database
+    $useQuery = firstRaw("SELECT id , password FROM todolist_user.users WHERE email='$email'");
+    if (!empty($useQuery)) {
+      $passwordHash = $useQuery['password'];
+      $userId = $useQuery['id'];
+      if (password_verify($password, $passwordHash)) {
+        // tao token login
+        $tokenLogin = sha1(uniqid(), time());
+        // insert data vao login token
+        $dataToken =
+          [
+            'userId' => $userId,
+            'token' => $tokenLogin,
+            'createdAt' => date('Y-m-d H:i:s')
+          ];
+        $insertTokenStatus = insert('login_token', $dataToken);
+        if ($insertTokenStatus) {
+          // lưu login token vào session
+          setSession('tokenLogin', $tokenLogin);
+          // chuyển hướng
+          redirect('?module=users');
+        } else {
+          setFlashData('msg', 'Lỗi hệ thống không thể đăng nhập vào hệ thống');
+          redirect('?module=auth&action=login');
+        }
+      } else {
+        setFlashData('msg', 'Sai mật khẩu , Vui Lòng Thử Lại Nhé');
+        redirect('?module=auth&action=login');
+      }
+    }
+  } else {
+    setFlashData('msg', 'Vui lòng kiểm tra lại tài khoản và mật khẩu');
+  }
+}
+
 ?>
 <div class="container h-100">
   <div class="d-flex justify-content-center h-100">
