@@ -2,7 +2,6 @@
 if (!defined('_INCODE')) {
   die("Access denied...");
 }
-layout('header-login');
 $msg = '';
 
 // xu ly dang ky
@@ -58,15 +57,54 @@ if (isPost()) {
   }
   if (empty($errors)) {
     setFlashData('msg', 'Register Sucessfully');
-    $msg =  getFlashData('msg');
+
+    $activeToken = sha1(uniqid() + time());
+    $dataInsert = [
+      'email' => $body['email'],
+      'fullname' => $body['fullname'],
+      'phone' => $body['phone'],
+      'password' => password_hash($body['password'], PASSWORD_DEFAULT),
+      'active_token' => $activeToken,
+      'createat_datetime' => date('Y-m-d H:i:s')
+    ];
+    $statusStatement = insert('todolist_user.users ', $dataInsert);
+    var_dump($statusStatement);
+    if ($statusStatement) {
+      $linkActive = _WEB_HOST_ROOT . '?module=auth&action=active&token=' . $activeToken;
+      // thiết lập gửi mail
+      $subject = $body['fullname'] . 'Vui lòng kích hoạt tài khoản';
+      $content =  'Chào Bạn : ' . $body['fullname'] . ' Vui lòng click vào link bên dưới đây để kích hoàn tài khoản : ';
+      $content .=   $linkActive  . '<br/>';
+      $content .= 'Trân trọng';
+      // tiến hành gửi mail
+      $sendStatus = sendMail($body['email'], $subject, $content);
+      if ($sendStatus) {
+        setFlashData('msg', 'Đăng ký thành công, vui lòng kiểm tra email để kích hoạt tài khoản');
+        redirect('?module=auth&action=register'); // load lai trang dang nhap
+      } else {
+        setFlashData('msg', 'Đăng ký Thất Bại, Hệ thống có vẻ đang bị lỗi');
+        redirect('?module=auth&action=register'); // load lai trang đăng ký 
+      }
+    } else {
+      setFlashData('msg', 'Đăng ký Thất Bại, Hệ thống có vẻ đang bị lỗi');
+      redirect('?module=auth&action=register'); // load lai trang đăng ký
+    }
   } else {
     // co loi xay ra
+    // can set vao session de khi reload khong mat du lieu
     setFlashData('msg', 'Vui Lòng Kiểm Tra Dữ Liệu Nhập Vào ');
-    $msg =  getFlashData('msg');
-    //$msg = 'Vui Long Nhap Lai Thong Tin';
+    setFlashData('old', $body);
+    setFlashData('errors', $errors);
+    redirect('?module=auth&action=register'); // load lai trang dang ky 
   }
 }
+$errors = getFlashData('errors');
+$msg = getFlashData('msg');
+$old = getFlashData('old');
+?>
 
+<?php
+layout('header-login');
 ?>
 
 <div class="container h-100">
@@ -87,38 +125,42 @@ if (isPost()) {
             <div class="input-group-append">
               <span class="input-group-text"><i class="fa fa-user" aria-hidden="true"></i></span>
             </div>
-            <input type="text" name="fullname" class="form-control input_user" value="" placeholder="Họ Tên...">
+            <input type="text" name="fullname" class="form-control input_user" value="<?php echo oldData($old, 'fullname') ?>" placeholder="Họ Tên...">
           </div>
+          <?php echo get_error($errors, 'fullname', '<div class=error>', '</div>') ?>
           <div class="input-group mb-1">
             <div class="input-group-append">
               <span class="input-group-text"><i class="fa fa-phone" aria-hidden="true"></i></span>
             </div>
-            <input type="number" name="phone" class="form-control input_pass" value="" placeholder="Điện Thoại...">
+            <input type="number" name="phone" class="form-control input_pass" value="<?php echo oldData($old, 'phone') ?>" placeholder="Điện Thoại...">
           </div>
+          <?php echo (!empty($errors['phone'])) ? '<div class="error">' . reset($errors['phone']) . '</div>' : null ?>
           <div class="input-group mb-1">
             <div class="input-group-append">
               <span class="input-group-text"><i class="fa fa-envelope" aria-hidden="true"></i></span>
             </div>
-            <input type="email" name="email" class="form-control input_pass" value="" placeholder="Email...">
+            <input type="email" name="email" class="form-control input_pass" value="<?php echo oldData($old, 'email') ?>" placeholder="Email...">
           </div>
+          <?php echo (!empty($errors['email'])) ? '<div class=error>' . reset($errors['email']) . '</div>' : null ?>
           <div class="input-group mb-1">
             <div class="input-group-append">
               <span class="input-group-text"><i class="fa fa-key" aria-hidden="true"></i></span>
             </div>
-            <input type="password" name="password" class="form-control input_pass" value="" placeholder="Mật Khẩu...">
+            <input type="password" name="password" class="form-control input_pass" value="<?php echo oldData($old, 'password') ?>" placeholder="Mật Khẩu...">
           </div>
+          <?php echo (!empty($errors['password'])) ? '<div class=error>' . reset($errors['password']) . '</div>' : null ?>
           <div class="input-group mb-1">
             <div class="input-group-append">
               <span class="input-group-text"><i class="fa fa-key" aria-hidden="true"></i></span>
             </div>
-            <input type="password" name="confirm_password" class="form-control input_pass" value="" placeholder="Nhập Lại Mật Khẩu...">
+            <input type="password" name="confirm_password" class="form-control input_pass" value="<?php echo oldData($old, 'confirm_password') ?>" placeholder="Nhập Lại Mật Khẩu...">
           </div>
+          <?php echo (!empty($errors['confirm_password'])) ? '<div class=error>' . reset($errors['confirm_password']) . '</div>' : null ?>
           <div class="d-flex justify-content-center mt-2 login_container">
             <button type="submit" name="button" value="submit" class="btn login_btn">Register</button>
           </div>
         </form>
       </div>
-
       <div class="mt-6">
         <div class="d-flex justify-content-center links">
           Don't have an account? <a href="?module=auth&action=login" class="ml-2">Login</a>
@@ -130,3 +172,4 @@ if (isPost()) {
 </div>
 <?php
 layout('footer-login');
+?>

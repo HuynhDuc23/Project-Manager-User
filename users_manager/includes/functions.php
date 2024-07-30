@@ -36,6 +36,7 @@ function sendMail($to, $subject, $content)
     $mail->isHTML(true);                                  //Set email format to HTML
     $mail->Subject = $subject;
     $mail->Body    = $content;
+    $mail->CharSet = "UTF-8";
 
 
     return $mail->send();
@@ -150,9 +151,26 @@ function isPhone($number)
   }
   return false;
 }
+// ham thong bao loi
 function getMsg($msg, $type = 'success')
 {
   echo "<div class=\"alert alert-$type\">";
   echo $msg;
   echo '</div>';
+}
+// code chuyern huong trang 
+function redirect($path = 'index.php')
+{
+  header("Location: $path");
+  exit;
+}
+// old data
+function oldData($datas, $fieldName, $default = null)
+{
+  return (!empty($datas[$fieldName])) ? $datas[$fieldName] : $default;
+}
+// get thong bao loi
+function get_error($errors, $fieldName, $beforeHTML, $afterHTML, $default = null)
+{
+  return (!empty($errors[$fieldName])) ? $beforeHTML . reset($errors[$fieldName]) . $afterHTML : $default;
 }

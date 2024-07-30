@@ -30,7 +30,8 @@ function insert($table, $dataInsert)
   $keys = array_keys($dataInsert);
   $fieldStr = implode(', ', $keys);
   $valueStr = ':' . implode(', :', $keys);
-  $sql = 'INSERT INTO ' . $table . '' . ($fieldStr) . 'VALUES (' . $valueStr . ')';
+  $sql = 'INSERT INTO ' . $table . ' (' . ($fieldStr) . ')' . 'VALUES (' . $valueStr . ')';
+  echo $sql;
   return query($sql, $dataInsert);
 }
 function update($table, $dataUpdate, $condition)

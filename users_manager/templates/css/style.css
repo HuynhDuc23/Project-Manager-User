@@ -8,10 +8,10 @@
   }
   .user_card {
     height: 400px;
-    width: 350px;
+    width: 500px;
     margin-top: auto;
     margin-bottom: auto;
-    background: #f39c12;
+    background:yellowgreen;
     position: relative;
     display: flex;
     justify-content: center;
@@ -67,4 +67,9 @@
   }
   .custom-checkbox .custom-control-input:checked~.custom-control-label::before {
     background-color: #c0392b !important;
+  }
+  .error {
+    color: red;
+    font-style: italic;
+    font-size: 90%;
   }
