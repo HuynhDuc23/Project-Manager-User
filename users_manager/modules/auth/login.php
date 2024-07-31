@@ -6,6 +6,10 @@ layout('header-login');
 
 $msg = getFlashData('msg');
 
+// kiem tra trang thai dang nhap
+
+
+
 // Kiểm tra trạng thái đăng nhập
 $checkLogin = false;
 if (getSession('loginToken')) {
@@ -67,10 +71,12 @@ if (isPost()) {
 <div class="container h-100">
   <div class="d-flex justify-content-center h-100">
     <div class="user_card">
+      <h3 class="text-center text-uppercase">Đăng Nhập</h3>
       <?php echo (!empty($msg)) ? getMsg($msg) : null ?>
+
       <div class="d-flex justify-content-center form_container">
 
-        <form action="?module=auth&action=login" method="post">
+        <form action="?module=auth&action=forgot" method="post">
           <div class="input-group mb-3">
             <div class="input-group-append">
               <span class="input-group-text"><i class="fa fa-user" aria-hidden="true"></i></span>

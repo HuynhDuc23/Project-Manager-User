@@ -109,6 +109,7 @@ layout('header-login');
 
 <div class="container h-100">
   <div class="d-flex justify-content-center h-100">
+    <h3 class="text-center text-uppercase">Đăng Ký</h3>
 
     <div class="user_card">
 

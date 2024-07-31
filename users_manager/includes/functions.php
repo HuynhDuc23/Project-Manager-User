@@ -152,7 +152,7 @@ function isPhone($number)
   return false;
 }
 // ham thong bao loi
-function getMsg($msg, $type = 'success')
+function getMsg($msg = 'Error', $type = 'danger')
 {
   echo "<div class=\"alert alert-$type\">";
   echo $msg;
@@ -170,7 +170,8 @@ function oldData($datas, $fieldName, $default = null)
   return (!empty($datas[$fieldName])) ? $datas[$fieldName] : $default;
 }
 // get thong bao loi
-function get_error($errors, $fieldName, $beforeHTML, $afterHTML, $default = null)
+function get_error($errors = [], $fieldName = '', $beforeHTML = '', $afterHTML = '', $default = null)
 {
   return (!empty($errors[$fieldName])) ? $beforeHTML . reset($errors[$fieldName]) . $afterHTML : $default;
 }
+// ham kiem tra dang nhap
